@@ -1,5 +1,4 @@
 import { hmac } from "https://deno.land/x/hmac@v2.0.1/mod.ts";
-import { cron } from "https://deno.land/x/deno_cron@v1.0.0/cron.ts";
 import { encode } from "https://deno.land/std@0.100.0/encoding/base64.ts";
 import { parse } from "https://deno.land/std@0.100.0/encoding/toml.ts";
 
@@ -106,4 +105,4 @@ async function run(): Promise<void> {
 }
 
 run();
-cron(`*/${Interval} * * * *`, run);
+setInterval(run, Interval * 60 * 1000);
