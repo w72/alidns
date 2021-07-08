@@ -1,0 +1,6 @@
+DomainName = "example.com"
+RR = "@"
+Endpoint = "https://alidns.aliyuncs.com/"
+AccessKeyId = "************************"
+AccessKeySecret = "******************************"
+Interval = 10

@@ -1,0 +1,13 @@
+[Unit]
+Description=AliDNS Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/deno run -A /opt/alidns/mod.ts
+
+[Install]
+WantedBy=multi-user.target
+
