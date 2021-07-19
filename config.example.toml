@@ -4,3 +4,4 @@ Endpoint = "https://alidns.aliyuncs.com/"
 AccessKeyId = "************************"
 AccessKeySecret = "******************************"
 Interval = 10
+GetIpFrom = "taobao.com" # taobao.com / ip.cn

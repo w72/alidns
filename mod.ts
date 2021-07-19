@@ -9,6 +9,7 @@ interface Config {
   AccessKeySecret: string;
   Endpoint?: string;
   Interval?: number;
+  GetIpFrom?: "taobao.com" | "ip.cn";
 }
 
 const dir = new URL(".", import.meta.url).pathname;
@@ -20,6 +21,7 @@ const {
   AccessKeySecret,
   Endpoint = "https://alidns.aliyuncs.com/",
   Interval = 10,
+  GetIpFrom = "taobao.com",
 } = parse(config) as unknown as Config;
 
 if (!DomainName || !AccessKeyId || !AccessKeySecret) {
@@ -28,9 +30,14 @@ if (!DomainName || !AccessKeyId || !AccessKeySecret) {
 }
 
 function getIp(): Promise<string | undefined> {
-  return fetch("https://ip.cn/api/index?type=0")
-    .then((r) => r.json())
-    .then((r) => r.ip);
+  if (GetIpFrom === "ip.cn")
+    return fetch("https://ip.cn/api/index?type=0")
+      .then((r) => r.json())
+      .then((r) => r.ip);
+
+  return fetch("https://www.taobao.com/help/getip.php")
+    .then((r) => r.text())
+    .then((r) => r.match(/"(.+)"/)?.[1]);
 }
 
 function aliDNS(
