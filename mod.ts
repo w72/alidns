@@ -75,7 +75,8 @@ async function updateDNS(
 
   if (record) {
     const { RecordId, Value: prevValue } = record;
-    if (prevValue === Value) return "ip 与已存在的解析记录相同，无需更新";
+    if (prevValue === Value)
+      return `ip (${Value}) 与已存在的解析记录相同，无需更新`;
     const params = { RecordId, RR, Type: "A", Value };
     const res = await aliDNS("UpdateDomainRecord", params);
     if (res.Code) return res.Message;
@@ -92,14 +93,15 @@ async function updateDomain(DomainName: string, RR: string): Promise<string> {
   try {
     const ip = await getIp();
     if (ip && ip === prevIp) {
-      return `ip 与前次相同，无需更新`;
+      return `ip (${ip}) 与前次相同，无需更新`;
     } else if (ip) {
+      const res = `更新 ip 成功，${prevIp} -> ${ip}`;
       prevIp = ip;
       const err = await updateDNS(DomainName, RR, ip);
       if (err) return err;
-      return `更新 ip 成功，新 ip 为 ${ip}`;
+      return res;
     } else {
-      return `获取 ip 失败`;
+      return `获取 ip 失败，前次 ip 为 ${prevIp}`;
     }
   } catch (e) {
     return String(e?.message || e);
@@ -108,7 +110,7 @@ async function updateDomain(DomainName: string, RR: string): Promise<string> {
 
 async function run(): Promise<void> {
   const msg = await updateDomain(DomainName, RR);
-  if (msg) console.log(`[info] ${msg}`);
+  if (msg) console.log(msg);
 }
 
 run();
