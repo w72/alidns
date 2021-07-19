@@ -29,7 +29,7 @@ if (!DomainName || !AccessKeyId || !AccessKeySecret) {
   Deno.exit(1);
 }
 
-function getIp(): Promise<string | undefined> {
+function getIp(): Promise<string | void> {
   if (GetIpFrom === "ip.cn")
     return fetch("https://ip.cn/api/index?type=0")
       .then((r) => r.json())
