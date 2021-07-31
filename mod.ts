@@ -80,6 +80,7 @@ async function updateDNS(
     const params = { RecordId, RR, Type: "A", Value };
     const res = await aliDNS("UpdateDomainRecord", params);
     if (res.Code) return res.Message;
+    return;
   }
 
   const params = { DomainName, RR, Type: "A", Value };
